@@ -3,71 +3,81 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
 
 class ProductController extends Controller
 {
-
-    // Show All Products
+    // List all products
     public function index()
     {
         $products = Product::all();
         return view('products.index', compact('products'));
     }
 
-
-    // Show Add Product Form
+    // Show add product form
     public function create()
     {
         return view('products.create');
     }
 
-
-    // Save Product To Database
+    // Store product
     public function store(Request $request)
     {
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('Product_Images', 'public');
+        }
+
         Product::create([
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
-            'image' => $request->image,
             'stock' => $request->stock,
+            'image' => $imagePath,
         ]);
 
         return redirect('/products');
     }
 
-
-    // Show Edit Form
+    // Show edit form
     public function edit($id)
     {
         $product = Product::find($id);
         return view('products.edit', compact('product'));
     }
 
-
-    // Update Product
+    // Update product
     public function update(Request $request, $id)
     {
         $product = Product::find($id);
+
+        if ($request->hasFile('image')) {
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
+            }
+            $imagePath = $request->file('image')->store('Product_Images', 'public');
+            $product->image = $imagePath;
+        }
 
         $product->update([
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
-            'image' => $request->image,
             'stock' => $request->stock,
         ]);
 
         return redirect('/products');
     }
 
-
-    // Delete Product
+    // Delete product
     public function destroy($id)
     {
-        Product::find($id)->delete();
+        $product = Product::find($id);
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
+        }
+        $product->delete();
         return redirect('/products');
     }
-
 }

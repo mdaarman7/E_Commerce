@@ -2,7 +2,7 @@
     <div class="container mx-auto p-4">
         <h1 class="text-2xl font-bold mb-4">Edit Product</h1>
 
-        <form action="{{ route('products.update', $product->id) }}" method="POST">
+        <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="mb-4">
@@ -22,8 +22,11 @@
                 <input type="number" name="stock" class="border px-2 py-1 w-full" value="{{ $product->stock }}" required>
             </div>
             <div class="mb-4">
-                <label class="block mb-1">Image URL</label>
-                <input type="text" name="image" class="border px-2 py-1 w-full" value="{{ $product->image }}">
+                <label class="block mb-1">Product Image</label>
+                @if($product->image)
+                    <img src="{{ asset('storage/'.$product->image) }}" class="w-24 h-24 mb-2 object-cover">
+                @endif
+                <input type="file" name="image" class="border px-2 py-1 w-full">
             </div>
             <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Update Product</button>
         </form>
