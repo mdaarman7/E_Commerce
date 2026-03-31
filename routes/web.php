@@ -18,6 +18,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('products', ProductController::class);
+// Route::resource('products', ProductController::class);
 
-require __DIR__.'/auth.php';
+Route::middleware(['auth', 'role:seller'])->group(function () {
+
+    Route::resource('/seller/products', ProductController::class);
+});
+
+Route::get('/', [ProductController::class,'shop']);
+
+require __DIR__ . '/auth.php';
