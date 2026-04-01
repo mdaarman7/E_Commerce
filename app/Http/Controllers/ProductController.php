@@ -23,6 +23,12 @@ class ProductController extends Controller
         return view('shop.index', compact('products'));
     }
 
+    public function shopIndex()
+    {
+        $products = Product::inRandomOrder()->get();
+
+        return view('shop.index', compact('products'));
+    }
     // Show add product form
     public function create()
     {
@@ -92,7 +98,7 @@ class ProductController extends Controller
         $product = Product::where('id', $id)
             ->where('user_id', Auth::user()?->id)
             ->firstOrFail();
-            
+
         if ($product->image) {
             Storage::disk('public')->delete($product->image);
         }

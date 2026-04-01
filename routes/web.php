@@ -22,9 +22,11 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'role:seller'])->group(function () {
 
-    Route::resource('/seller/products', ProductController::class);
+    Route::resource('products', ProductController::class);
 });
 
-Route::get('/', [ProductController::class,'shop']);
+Route::get('/', [ProductController::class, 'shop']);
+
+Route::get('/shop', [ProductController::class, 'shopIndex'])->name('shop.index');
 
 require __DIR__ . '/auth.php';

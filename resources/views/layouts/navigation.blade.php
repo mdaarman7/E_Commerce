@@ -12,17 +12,58 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    
+                    {{-- Dashboard for all users --}}
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    {{-- SELLER MENU --}}
                     @auth
-                    <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')">
+                    @if(auth()->user()->role == 'seller')
+
+                    <x-nav-link :href="route('products.index')"
+                        :active="request()->routeIs('products.index')">
                         {{ __('My Products') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('products.create')" :active="request()->routeIs('products.create')">
+
+                    <x-nav-link :href="route('products.create')"
+                        :active="request()->routeIs('products.create')">
                         {{ __('Add Product') }}
                     </x-nav-link>
+
+                    @endif
                     @endauth
+
+
+                    {{-- CUSTOMER MENU --}}
+                    @auth
+                    @if(auth()->user()->role == 'customer')
+
+                    <x-nav-link :href="route('shop.index')"
+                        :active="request()->routeIs('shop.index')">
+
+                        {{ __('Shop') }}
+                    </x-nav-link>
+
+                    @endif
+                    @endauth
+
+
+                    {{-- ADMIN MENU  --}}
+                    @auth
+                    @if(auth()->user()->role == 'admin')
+
+                    <x-nav-link :href="route('admin.dashboard')"
+                        :active="request()->routeIs('admin.dashboard')">
+
+                        {{ __('Admin Panel') }}
+
+                    </x-nav-link>
+
+                    @endif
+                    @endauth
+
                 </div>
             </div>
 
@@ -52,7 +93,7 @@
                             @csrf
 
                             <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
+                                onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
@@ -108,7 +149,7 @@
                     @csrf
 
                     <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
+                        onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>

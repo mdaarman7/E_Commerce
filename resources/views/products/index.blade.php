@@ -1,10 +1,13 @@
 <x-app-layout>
     <div class="container mx-auto p-4">
         <h1 class="text-2xl font-bold mb-4">Products</h1>
+        @if(auth()->user()->role == 'seller')
 
-        <a href="{{ route('products.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">
+        <a href="{{ route('products.create') }}"
+            class="bg-blue-500 text-white px-4 py-2 rounded">
             Add Product
         </a>
+        @endif
 
         <table class="min-w-full bg-white border">
             <thead>
@@ -51,7 +54,6 @@
                                         stroke-width="2"
                                         d="M15.232 5.232l3.536 3.536M9 13l6.768-6.768a2.5 2.5 0 013.536 3.536L12.536 16.536a4 4 0 01-1.414.943L8 18l.521-3.121A4 4 0 019.464 13z" />
                                 </svg>
-
                             </a>
 
 
