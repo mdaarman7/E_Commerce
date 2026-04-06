@@ -4,19 +4,19 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
+                <!-- <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
-                </div>
+                </div> -->
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     
-                    {{-- Dashboard for all users --}}
+                    <!-- {{-- Dashboard for all users --}}
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
-                    </x-nav-link>
+                    </x-nav-link> -->
 
                     {{-- SELLER MENU --}}
                     @auth
@@ -67,9 +67,9 @@
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
-            @auth
+            <!-- Settings / Auth Actions -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
+            @auth
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
@@ -100,8 +100,24 @@
                         </form>
                     </x-slot>
                 </x-dropdown>
-            </div>
+            @else
+                <div class="flex items-center gap-3">
+                    @if (Route::has('login'))
+                    <a href="{{ route('login') }}"
+                        class="rounded-lg border border-blue-600 px-4 py-2 text-sm font-medium text-blue-600 transition hover:bg-blue-50">
+                        Login
+                    </a>
+                    @endif
+
+                    @if (Route::has('register'))
+                    <a href="{{ route('register') }}"
+                        class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700">
+                        Register
+                    </a>
+                    @endif
+                </div>
             @endauth
+            </div>
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
@@ -129,6 +145,18 @@
                 {{ __('Add Product') }}
             </x-responsive-nav-link>
             @endauth
+            @guest
+            @if (Route::has('login'))
+            <x-responsive-nav-link :href="route('login')">
+                {{ __('Login') }}
+            </x-responsive-nav-link>
+            @endif
+            @if (Route::has('register'))
+            <x-responsive-nav-link :href="route('register')">
+                {{ __('Register') }}
+            </x-responsive-nav-link>
+            @endif
+            @endguest
         </div>
 
         <!-- Responsive Settings Options -->

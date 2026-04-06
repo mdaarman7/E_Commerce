@@ -54,7 +54,7 @@ class ProductController extends Controller
             'user_id' => Auth::user()?->id
         ]);
 
-        return redirect('/seller/products');
+        return redirect()->route('products.index');
     }
 
     // Show edit form
@@ -89,7 +89,7 @@ class ProductController extends Controller
             'stock' => $request->stock,
         ]);
 
-        return redirect('/seller/products');
+        return redirect()->route('products.index');
     }
 
     // Delete product
@@ -103,6 +103,6 @@ class ProductController extends Controller
             Storage::disk('public')->delete($product->image);
         }
         $product->delete();
-        return redirect('/seller/products');
+        return redirect()->route('products.index');
     }
 }
