@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -17,5 +18,17 @@ class Product extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($product) {
+
+            if ($product->image) 
+            {
+                Storage::delete($product->image);
+            }
+        });
     }
 }

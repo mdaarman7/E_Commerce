@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+Route::get('/shop', function () {
     return view('welcome');
 });
 
@@ -25,7 +25,7 @@ Route::middleware(['auth', 'role:seller'])->group(function () {
     Route::resource('products', ProductController::class);
 });
 
-Route::get('/', [ProductController::class, 'shop']);
+Route::get('/shop', [ProductController::class, 'shop']);
 
 Route::get('/shop', [ProductController::class, 'shopIndex'])->name('shop.index');
 

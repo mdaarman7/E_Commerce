@@ -18,6 +18,12 @@
                         {{ __('Dashboard') }}
                     </x-nav-link> -->
 
+                    <x-nav-link :href="route('shop.index')"
+                        :active="request()->routeIs('shop.index')">
+
+                        {{ __('Shop') }}
+                    </x-nav-link>
+
                     {{-- SELLER MENU --}}
                     @auth
                     @if(auth()->user()->role == 'seller')
@@ -40,11 +46,7 @@
                     @auth
                     @if(auth()->user()->role == 'customer')
 
-                    <x-nav-link :href="route('shop.index')"
-                        :active="request()->routeIs('shop.index')">
-
-                        {{ __('Shop') }}
-                    </x-nav-link>
+                    
 
                     @endif
                     @endauth
