@@ -13,8 +13,14 @@
 
             <div class="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden">
                 <img
-                    onclick="openModal('{{ $product->name }}', '{{ $product->description }}', '{{ $product->price }}',
-                                    '{{ $product->stock }}','{{ asset('/storage/'.$product->image) }}')"
+                    onclick="openModal(
+                        {{ $product->id }},
+                        @js($product->name),
+                        @js($product->description),
+                        @js($product->price),
+                        @js($product->stock),
+                        @js(asset('storage/'.$product->image))
+                    )"
                     onhover="this.style.cursor='pointer'"
                     src="{{ asset('storage/'.$product->image) }}"
                     class="w-full h-48 object-cover">
@@ -28,9 +34,14 @@
 
                     </p>
                     <button
-                        onclick="openModal('{{ $product->name }}', '{{ $product->description }}', '{{ $product->price }}',
-                                                    '{{ $product->stock }}','{{ asset('/storage/'.$product->image) }}'
-)"
+                        onclick="openModal(
+                            {{ $product->id }},
+                            @js($product->name),
+                            @js($product->description),
+                            @js($product->price),
+                            @js($product->stock),
+                            @js(asset('storage/'.$product->image))
+                        )"
                         class="mt-3 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
 
                         View Product
@@ -49,7 +60,7 @@
 
                     <!-- close button -->
                     <button onclick="closeModal()"
-                        class="absolute top-2 right-3 text-xl font-bold">
+                        class="absolute top-1 right-3 text-xl font-bold">
 
                         ✖
 
@@ -77,6 +88,34 @@
                     <p id="modalStock"
                         class="text-gray-500"></p>
 
+                    @auth
+
+                    @if(auth()->user()->role == 'customer')
+
+                    <form method="POST" id="addToCartForm" action="">
+                        @csrf
+
+                        <button class="bg-green-600 text-white px-4 py-2 rounded w-full mt-2">
+                            Add to Cart
+                        </button>
+                    </form>
+
+                    @endif
+
+                    @endauth
+
+
+                    @guest
+
+                    <a href="{{ route('login') }}"
+                        class="bg-green-600 text-white px-4 py-2 rounded w-full mt-2 text-center block">
+
+                        Login to Add Cart
+
+                    </a>
+
+                    @endguest
+
                 </div>
 
             </div>
@@ -85,12 +124,18 @@
 </x-app-layout>
 
 <script>
-    function openModal(name, desc, price, stock, image) {
+    function openModal(id, name, description, price, stock, image) {
         document.getElementById('modalName').innerText = name;
-        document.getElementById('modalDesc').innerText = desc;
+        document.getElementById('modalDesc').innerText = description;
         document.getElementById('modalPrice').innerText = "Rs " + price;
         document.getElementById('modalStock').innerText = "Stock: " + stock;
         document.getElementById('modalImage').src = image;
+
+        const addToCartForm = document.getElementById('addToCartForm');
+        if (addToCartForm) {
+            addToCartForm.action = `/cart/add/${id}`;
+        }
+
         document.getElementById('productModal').classList.remove('hidden');
         document.getElementById('productModal').classList.add('flex');
     }

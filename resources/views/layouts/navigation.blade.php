@@ -12,7 +12,7 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    
+
                     <!-- {{-- Dashboard for all users --}}
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
@@ -46,7 +46,9 @@
                     @auth
                     @if(auth()->user()->role == 'customer')
 
-                    
+                    <x-nav-link :href="route('cart.index')">
+                        Cart
+                    </x-nav-link>
 
                     @endif
                     @endauth
@@ -71,7 +73,7 @@
 
             <!-- Settings / Auth Actions -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-            @auth
+                @auth
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
@@ -102,7 +104,7 @@
                         </form>
                     </x-slot>
                 </x-dropdown>
-            @else
+                @else
                 <div class="flex items-center gap-3">
                     @if (Route::has('login'))
                     <a href="{{ route('login') }}"
@@ -118,7 +120,7 @@
                     </a>
                     @endif
                 </div>
-            @endauth
+                @endauth
             </div>
 
             <!-- Hamburger -->

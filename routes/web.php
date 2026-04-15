@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/shop', function () {
@@ -28,5 +29,11 @@ Route::middleware(['auth', 'role:seller'])->group(function () {
 Route::get('/shop', [ProductController::class, 'shop']);
 
 Route::get('/shop', [ProductController::class, 'shopIndex'])->name('shop.index');
+
+Route::middleware(['auth', 'role:customer'])->group(function () {
+    Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+    Route::get('/cart',[CartController::class, 'index'])->name('cart.index');
+    Route::delete('/cart/remove/{id}',[CartController::class, 'remove'])->name('cart.remove');
+});
 
 require __DIR__ . '/auth.php';
