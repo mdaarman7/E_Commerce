@@ -46,8 +46,13 @@
                     @auth
                     @if(auth()->user()->role == 'customer')
 
-                    <x-nav-link :href="route('cart.index')">
-                        Cart
+                    <x-nav-link href="{{ route('cart.index') }}" class="relative ml-4">
+                        🛒
+                        @if($cartCount > 0)
+                        <span class="absolute -top-0 -right-5 bg-red-500 text-white text-xs px-2 rounded-full">
+                            {{ $cartCount }}
+                        </span>
+                        @endif
                     </x-nav-link>
 
                     @endif
