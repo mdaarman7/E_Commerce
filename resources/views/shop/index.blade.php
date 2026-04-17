@@ -21,9 +21,8 @@
                         @js($product->stock),
                         @js(asset('storage/'.$product->image))
                     )"
-                    onhover="this.style.cursor='pointer'"
                     src="{{ asset('storage/'.$product->image) }}"
-                    class="w-full h-48 object-cover">
+                    class="w-full h-48 object-cover cursor-pointer hover:scale-110 transition">
                 <div class="p-4">
                     <h3 class="font-semibold text-lg">
                         {{ $product->name }}
