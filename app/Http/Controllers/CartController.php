@@ -43,4 +43,44 @@ class CartController extends Controller
 
         return back();
     }
+    // public function increase($id)
+    // {
+    //     $cart = Cart::where('id', $id)
+    //         ->where('user_id', Auth::id())
+    //         ->firstOrFail();
+    //     $cart->quantity += 1;
+    //     $cart->save();
+
+    //     return back();
+    // }
+    public function increase($id)
+    {
+        $cart = Cart::findOrFail($id);
+        $cart->quantity += 1;
+        $cart->save();
+        return back();
+    }
+    // public function decrease($id)
+    // {
+    //     $cart = Cart::where('id', $id)
+    //         ->where('user_id', Auth::id())
+    //         ->firstOrFail();
+    //     if ($cart->quantity > 1) {
+    //         $cart->quantity -= 1;
+    //         $cart->save();
+    //     } else {
+    //         $cart->delete();
+    //     }
+    // }
+    public function decrease($id)
+    {
+        $cart = Cart::findOrFail($id);
+        if ($cart->quantity > 1) {
+            $cart->quantity -= 1;
+            $cart->save();
+        } else {
+            $cart->delete(); 
+        }
+        return back();
+    }
 }
