@@ -7,11 +7,11 @@
     </x-slot>
 
     <div class="py-10 px-10">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:grid-cols-5 lg:grid-cols-6 gap-4">
 
             @foreach($products as $product)
 
-            <div class="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden">
+            <div class="bg-black border border-gray-600 rounded-xl shadow hover:shadow-lg hover:scale-110 transition overflow-hidden">
                 <img
                     onclick="openModal(
                         {{ $product->id }},
@@ -22,8 +22,8 @@
                         @js(asset('storage/'.$product->image))
                     )"
                     src="{{ asset('storage/'.$product->image) }}"
-                    class="w-full h-48 object-cover cursor-pointer hover:scale-110 transition">
-                <div class="p-4">
+                    class="w-full h-48 object-contain cursor-pointer ">
+                <div class="p-2 bg-blue-100">
                     <h3 class="font-semibold text-lg">
                         {{ $product->name }}
                     </h3>
