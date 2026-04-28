@@ -4,6 +4,7 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Shop
         </h2>
+        
     </x-slot>
 
     <div class="py-10 px-10">
@@ -68,7 +69,7 @@
 
                     <!-- image -->
                     <img id="modalImage"
-                        class="w-full h-52 object-cover rounded">
+                        class="w-full h-52 object-contain rounded">
 
 
                     <!-- details -->
