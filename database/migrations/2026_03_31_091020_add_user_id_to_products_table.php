@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('products', function (Blueprint $table) use ($foreignKey) {
+        Schema::table('products', function (Blueprint $table) {
             if (!Schema::hasColumn('products', 'user_id')) {
                 $table->foreignId('user_id')->after('id')->constrained()->onDelete('cascade');
             }
@@ -31,7 +31,7 @@ return new class extends Migration
             ->whereNotNull('REFERENCED_TABLE_NAME')
             ->value('CONSTRAINT_NAME');
 
-        Schema::table('products', function (Blueprint $table) {
+        Schema::table('products', function (Blueprint $table) use ($foreignKey) {
             if (Schema::hasColumn('products', 'user_id')) {
                 if ($foreignKey) {
                     $table->dropForeign($foreignKey);

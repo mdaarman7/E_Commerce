@@ -4,12 +4,29 @@
     </x-slot>
 
     <div class="p-10">
+        @if (session('success'))
+            <div class="mb-4 rounded border border-green-200 bg-green-50 px-4 py-3 text-green-700">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="mb-4 rounded border border-red-200 bg-red-50 px-4 py-3 text-red-700">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @error('cart')
+            <div class="mb-4 rounded border border-red-200 bg-red-50 px-4 py-3 text-red-700">
+                {{ $message }}
+            </div>
+        @enderror
 
         @php
             $total = 0;
         @endphp
 
-        @foreach($carts as $cart)
+        @forelse($carts as $cart)
 
         @php
             $total += $cart->product->price * $cart->quantity;
@@ -28,6 +45,7 @@
                     {{ $cart->product->name }}
                 </h3>
                 <p>Rs {{ $cart->product->price }}</p>
+                <p class="text-sm text-gray-500">Available: {{ $cart->product->stock }}</p>
 
                 <!-- Quantity Controls -->
                 <div class="flex items-center gap-3 mt-2">
@@ -63,15 +81,28 @@
             </form>
 
         </div>
-        @endforeach
+        @empty
+            <div class="rounded border bg-white p-8 text-center">
+                <h3 class="text-lg font-semibold text-gray-800">Your cart is empty</h3>
+                <p class="mt-1 text-gray-500">Add products from the shop before checking out.</p>
+                <a href="{{ route('shop.index') }}"
+                    class="mt-4 inline-block rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
+                    Continue Shopping
+                </a>
+            </div>
+        @endforelse
 
         <!-- Total Price -->
-        <div class="text-right mt-6">
-            @if ($carts->count() > 0)
+        @if ($carts->count() > 0)
+            <div class="mt-6 flex flex-col items-end gap-4">
                 <h3 class="text-xl font-bold border p-4 inline-block rounded">
-                    Total: Rs {{ $total }}
+                    Total: Rs {{ number_format($total, 2) }}
                 </h3>
-            @endif
-        </div>
+                <a href="{{ route('checkout.create') }}"
+                    class="rounded bg-green-600 px-6 py-3 font-semibold text-white hover:bg-green-700">
+                    Proceed to Checkout
+                </a>
+            </div>
+        @endif
     </div>
 </x-app-layout>

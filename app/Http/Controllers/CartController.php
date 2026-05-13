@@ -15,6 +15,11 @@ class CartController extends Controller
         $cart = Cart::where('user_id', Auth::id())
             ->where('product_id', $id)
             ->first();
+
+        if ($product->stock < 1 || ($cart && $cart->quantity >= $product->stock)) {
+            return back()->with('error', 'This product is out of stock.');
+        }
+
         if ($cart) {
             $cart->quantity += 1;
             $cart->save();
@@ -55,7 +60,15 @@ class CartController extends Controller
     // }
     public function increase($id)
     {
-        $cart = Cart::findOrFail($id);
+        $cart = Cart::with('product')
+            ->where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        if ($cart->quantity >= $cart->product->stock) {
+            return back()->with('error', 'No more stock is available for this product.');
+        }
+
         $cart->quantity += 1;
         $cart->save();
         return back();
@@ -74,12 +87,15 @@ class CartController extends Controller
     // }
     public function decrease($id)
     {
-        $cart = Cart::findOrFail($id);
+        $cart = Cart::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
         if ($cart->quantity > 1) {
             $cart->quantity -= 1;
             $cart->save();
         } else {
-            $cart->delete(); 
+            $cart->delete();
         }
         return back();
     }

@@ -60,12 +60,17 @@
                     @if(auth()->user()->role == 'customer')
 
                     <x-nav-link href="{{ route('cart.index') }}" class="relative ml-4">
-                        🛒
+                        {{ __('Cart') }}
                         @if($cartCount > 0)
                         <span class="absolute -top-0 -right-5 bg-red-500 text-white text-xs px-2 rounded-full">
                             {{ $cartCount }}
                         </span>
                         @endif
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('checkout.index')"
+                        :active="request()->routeIs('checkout.index') || request()->routeIs('checkout.show')">
+                        {{ __('Orders') }}
                     </x-nav-link>
 
                     @endif
@@ -160,12 +165,23 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
             @auth
-            <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')">
-                {{ __('My Products') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('products.create')" :active="request()->routeIs('products.create')">
-                {{ __('Add Product') }}
-            </x-responsive-nav-link>
+                @if(auth()->user()->role == 'seller')
+                    <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')">
+                        {{ __('My Products') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('products.create')" :active="request()->routeIs('products.create')">
+                        {{ __('Add Product') }}
+                    </x-responsive-nav-link>
+                @endif
+
+                @if(auth()->user()->role == 'customer')
+                    <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
+                        {{ __('Cart') }} ({{ $cartCount }})
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('checkout.index')" :active="request()->routeIs('checkout.index') || request()->routeIs('checkout.show')">
+                        {{ __('Orders') }}
+                    </x-responsive-nav-link>
+                @endif
             @endauth
             @guest
             @if (Route::has('login'))
